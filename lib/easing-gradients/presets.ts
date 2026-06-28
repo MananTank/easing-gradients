@@ -58,8 +58,8 @@ function orderPresets(presets: PresetDefinition[]): PresetDefinition[] {
   return [...priority, ...rest];
 }
 
-const ALL_GRADIENT_PRESETS: PresetDefinition[] = [
-  ...BEZIER_EASING_OPTIONS.filter(
+const BEZIER_GRADIENT_PRESETS: PresetDefinition[] =
+  BEZIER_EASING_OPTIONS.filter(
     (option): option is { value: BezierEasingName; label: string } =>
       option.value !== "custom"
   ).map((option) => ({
@@ -68,24 +68,40 @@ const ALL_GRADIENT_PRESETS: PresetDefinition[] = [
     category: getCategory(option.value),
     curveType: "bezier" as const,
     easing: EASINGS[option.value],
-  })),
-  ...FUNCTION_EASING_OPTIONS.map((option) => ({
+  }));
+
+const FUNCTION_GRADIENT_PRESETS: PresetDefinition[] =
+  FUNCTION_EASING_OPTIONS.map((option) => ({
     id: option.value,
     label: option.label,
     category: getCategory(option.value),
     curveType: "function" as const,
     easing: EASINGS[option.value],
-  })),
+  }));
+
+const ALL_GRADIENT_PRESETS: PresetDefinition[] = [
+  ...BEZIER_GRADIENT_PRESETS,
+  ...FUNCTION_GRADIENT_PRESETS,
 ];
 
-export const GRADIENT_PRESETS = orderPresets(ALL_GRADIENT_PRESETS);
+const BEZIER_PRESET_LABELS = new Set(
+  BEZIER_GRADIENT_PRESETS.map((preset) => preset.label)
+);
 
-export const ALL_PRESET_IDS = GRADIENT_PRESETS.map(
+/** Presets shown in the grid — one entry per label (bezier wins over function). */
+export const GRADIENT_PRESETS = orderPresets([
+  ...BEZIER_GRADIENT_PRESETS,
+  ...FUNCTION_GRADIENT_PRESETS.filter(
+    (preset) => !BEZIER_PRESET_LABELS.has(preset.label)
+  ),
+]);
+
+export const ALL_PRESET_IDS = ALL_GRADIENT_PRESETS.map(
   (preset) => preset.id
 ) as EasingName[];
 
 export function getPresetById(id: string): PresetDefinition | null {
-  return GRADIENT_PRESETS.find((preset) => preset.id === id) ?? null;
+  return ALL_GRADIENT_PRESETS.find((preset) => preset.id === id) ?? null;
 }
 
 export function isValidPresetId(id: string): id is EasingName {

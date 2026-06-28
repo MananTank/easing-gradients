@@ -12,13 +12,10 @@ export type BezierEasingName =
   | "ease-in-out-cubic"
   | "ease-in-quart"
   | "ease-out-quart"
-  | "ease-in-out-quart"
   | "ease-in-expo"
   | "ease-out-expo"
-  | "ease-in-out-expo"
   | "ease-in-circ"
-  | "ease-out-circ"
-  | "ease-in-out-circ";
+  | "ease-out-circ";
 
 export type FunctionEasingName =
   | "ease-in-sine"
@@ -32,13 +29,10 @@ export type FunctionEasingName =
   | "in-out-cubic"
   | "in-quart"
   | "out-quart"
-  | "in-out-quart"
   | "in-expo"
   | "out-expo"
-  | "in-out-expo"
   | "in-circ"
-  | "out-circ"
-  | "in-out-circ";
+  | "out-circ";
 
 export type EasingName = BezierEasingName | FunctionEasingName | "custom";
 
@@ -67,13 +61,10 @@ export const FUNCTION_EASING_OPTIONS: EasingOption<FunctionEasingName>[] = [
   { value: "in-out-cubic", label: "Ease in out cubic" },
   { value: "in-cubic", label: "Ease in cubic" },
   { value: "out-quart", label: "Ease out quart" },
-  { value: "in-out-quart", label: "Ease in out quart" },
   { value: "in-quart", label: "Ease in quart" },
   { value: "out-expo", label: "Ease out expo" },
-  { value: "in-out-expo", label: "Ease in out expo" },
   { value: "in-expo", label: "Ease in expo" },
   { value: "out-circ", label: "Ease out circ" },
-  { value: "in-out-circ", label: "Ease in out circ" },
   { value: "in-circ", label: "Ease in circ" },
 ];
 
@@ -92,13 +83,10 @@ export const BEZIER_EASING_OPTIONS: EasingOption<
   { value: "ease-in-out-cubic", label: "Ease in out cubic" },
   { value: "ease-out-cubic", label: "Ease out cubic" },
   { value: "ease-in-cubic", label: "Ease in cubic" },
-  { value: "ease-in-out-quart", label: "Ease in out quart" },
   { value: "ease-out-quart", label: "Ease out quart" },
   { value: "ease-in-quart", label: "Ease in quart" },
-  { value: "ease-in-out-expo", label: "Ease in out expo" },
   { value: "ease-out-expo", label: "Ease out expo" },
   { value: "ease-in-expo", label: "Ease in expo" },
-  { value: "ease-in-out-circ", label: "Ease in out circ" },
   { value: "ease-out-circ", label: "Ease out circ" },
   { value: "ease-in-circ", label: "Ease in circ" },
 ];
@@ -167,13 +155,10 @@ export const BEZIER_PRESETS: Record<BezierEasingName, CubicBezierPoints> = {
   "ease-in-out-cubic": { x1: 0.645, y1: 0.045, x2: 0.355, y2: 1 },
   "ease-in-quart": { x1: 0.895, y1: 0.03, x2: 0.685, y2: 0.22 },
   "ease-out-quart": { x1: 0.165, y1: 0.84, x2: 0.44, y2: 1 },
-  "ease-in-out-quart": { x1: 0.77, y1: 0, x2: 0.175, y2: 1 },
   "ease-in-expo": { x1: 0.95, y1: 0.05, x2: 0.795, y2: 0.035 },
   "ease-out-expo": { x1: 0.19, y1: 1, x2: 0.22, y2: 1 },
-  "ease-in-out-expo": { x1: 1, y1: 0, x2: 0, y2: 1 },
   "ease-in-circ": { x1: 0.6, y1: 0.04, x2: 0.98, y2: 0.335 },
   "ease-out-circ": { x1: 0.075, y1: 0.82, x2: 0.165, y2: 1 },
-  "ease-in-out-circ": { x1: 0.785, y1: 0.135, x2: 0.15, y2: 0.86 },
 };
 
 const FUNCTION_EASINGS: Record<FunctionEasingName, EasingFn> = {
@@ -188,24 +173,10 @@ const FUNCTION_EASINGS: Record<FunctionEasingName, EasingFn> = {
   "in-out-cubic": (t) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2),
   "in-quart": (t) => t * t * t * t,
   "out-quart": (t) => 1 - (1 - t) ** 4,
-  "in-out-quart": (t) =>
-    t < 0.5 ? 8 * t * t * t * t : 1 - (-2 * t + 2) ** 4 / 2,
   "in-expo": (t) => (t === 0 ? 0 : 2 ** (10 * t - 10)),
   "out-expo": (t) => (t === 1 ? 1 : 1 - 2 ** (-10 * t)),
-  "in-out-expo": (t) =>
-    t === 0
-      ? 0
-      : t === 1
-        ? 1
-        : t < 0.5
-          ? 2 ** (20 * t - 10) / 2
-          : (2 - 2 ** (-20 * t + 10)) / 2,
   "in-circ": (t) => 1 - Math.sqrt(1 - t ** 2),
   "out-circ": (t) => Math.sqrt(1 - (t - 1) ** 2),
-  "in-out-circ": (t) =>
-    t < 0.5
-      ? (1 - Math.sqrt(1 - (2 * t) ** 2)) / 2
-      : (Math.sqrt(1 - (-2 * t + 2) ** 2) + 1) / 2,
 };
 
 const BEZIER_EASINGS = Object.fromEntries(
@@ -257,14 +228,10 @@ export function getFunctionFormula(preset: FunctionEasingName): string {
     "in-out-cubic": "t < 0.5 ? 4t³ : 1 - (-2t + 2)³ / 2",
     "in-quart": "t⁴",
     "out-quart": "1 - (1 - t)⁴",
-    "in-out-quart": "t < 0.5 ? 8t⁴ : 1 - (-2t + 2)⁴ / 2",
     "in-expo": "t = 0 ? 0 : 2^(10t - 10)",
     "out-expo": "t = 1 ? 1 : 1 - 2^(-10t)",
-    "in-out-expo": "t < 0.5 ? 2^(20t - 10) / 2 : (2 - 2^(-20t + 10)) / 2",
     "in-circ": "1 - √(1 - t²)",
     "out-circ": "√(1 - (t - 1)²)",
-    "in-out-circ":
-      "t < 0.5 ? (1 - √(1 - 4t²)) / 2 : (√(1 - (-2t + 2)²) + 1) / 2",
   };
 
   return formulas[preset];
