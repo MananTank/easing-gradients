@@ -45,17 +45,36 @@ function getCategory(id: EasingName): PresetCategory {
   return "other";
 }
 
-const PRESET_PRIORITY: EasingName[] = ["linear", "ease", "ease-out", "ease-in"];
+/** Grid order: ease first, then in → out → in-out groups. */
+const GRID_PRESET_ORDER: EasingName[] = [
+  "ease",
+  "ease-in",
+  "ease-in-sine",
+  "ease-in-quad",
+  "ease-in-cubic",
+  "ease-in-quart",
+  "ease-out",
+  "ease-out-sine",
+  "ease-out-quad",
+  "ease-out-cubic",
+  "ease-out-quart",
+  "ease-out-expo",
+  "ease-in-out",
+  "ease-in-out-sine",
+  "ease-in-out-quad",
+  "ease-in-out-cubic",
+  "linear",
+];
 
 function orderPresets(presets: PresetDefinition[]): PresetDefinition[] {
   const byId = new Map(presets.map((preset) => [preset.id, preset]));
-  const priority = PRESET_PRIORITY.flatMap((id) => {
+  const ordered = GRID_PRESET_ORDER.flatMap((id) => {
     const preset = byId.get(id);
     return preset ? [preset] : [];
   });
-  const rest = presets.filter((preset) => !PRESET_PRIORITY.includes(preset.id));
+  const rest = presets.filter((preset) => !GRID_PRESET_ORDER.includes(preset.id));
 
-  return [...priority, ...rest];
+  return [...ordered, ...rest];
 }
 
 const BEZIER_GRADIENT_PRESETS: PresetDefinition[] =
@@ -89,12 +108,18 @@ const BEZIER_PRESET_LABELS = new Set(
 );
 
 /** Presets shown in the grid — one entry per label (bezier wins over function). */
+const GRID_EXCLUDED_PRESET_IDS = new Set<EasingName>([
+  "ease-out-circ",
+  "ease-in-expo",
+  "ease-in-circ",
+]);
+
 export const GRADIENT_PRESETS = orderPresets([
   ...BEZIER_GRADIENT_PRESETS,
   ...FUNCTION_GRADIENT_PRESETS.filter(
     (preset) => !BEZIER_PRESET_LABELS.has(preset.label)
   ),
-]);
+]).filter((preset) => !GRID_EXCLUDED_PRESET_IDS.has(preset.id));
 
 export const ALL_PRESET_IDS = ALL_GRADIENT_PRESETS.map(
   (preset) => preset.id
