@@ -1,5 +1,6 @@
 "use client";
 
+import { Undo2Icon } from "lucide-react";
 import Link from "next/link";
 
 import {
@@ -14,25 +15,11 @@ import { cn } from "@/lib/utils";
 
 import { useUiSound } from "./sound-provider";
 
-export const PAGE =
-  "mx-auto flex w-full max-w-3xl flex-col gap-10 px-6 py-14 sm:px-8";
-
-export const EDITOR_PAGE =
-  "mx-auto flex w-full max-w-3xl flex-col gap-10 px-6 py-14 sm:px-8";
-
-export const FIELD_LABEL = "text-muted-foreground text-xs tracking-wide";
-
-export const CONTROL =
-  "bg-secondary/50 focus-ring w-full rounded-lg px-3 py-2 text-sm outline-none transition-colors";
-
-export const CODE_BLOCK =
-  "bg-secondary/40 overflow-x-auto rounded-lg p-4 font-mono text-[13px] leading-relaxed whitespace-pre-wrap text-foreground/80";
-
 export function PageHeader({
   title,
   description,
   backHref,
-  backLabel = "All presets",
+  backLabel,
 }: {
   title: string;
   description?: string;
@@ -42,21 +29,23 @@ export function PageHeader({
   const { playClick } = useUiSound();
 
   return (
-    <header className="space-y-3">
+    <header className="space-y-8">
       {backHref ? (
         <Link
           href={backHref}
           onClick={playClick}
-          className="text-muted-foreground hover:text-foreground focus-ring inline-flex items-center gap-1 text-xs transition-colors"
+          className="focus-ring inline-flex items-center gap-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground"
         >
-          <span aria-hidden>←</span>
+          <Undo2Icon className="size-3.5" />
           {backLabel}
         </Link>
       ) : null}
       <div className="space-y-1.5">
-        <h1 className="text-lg font-normal tracking-tight">{title}</h1>
+        <h1 className="text-2xl font-medium tracking-tight capitalize">
+          {title}
+        </h1>
         {description ? (
-          <p className="text-muted-foreground text-sm leading-relaxed">
+          <p className="text-sm leading-normal text-muted-foreground">
             {description}
           </p>
         ) : null}
@@ -116,7 +105,9 @@ export function Field({
 }) {
   return (
     <div className="space-y-2">
-      <span className={FIELD_LABEL}>{label}</span>
+      <span className="text-muted-foreground text-xs tracking-wide">
+        {label}
+      </span>
       {children}
     </div>
   );
@@ -156,6 +147,6 @@ export function OptionSelect<T extends string>({
 
 export function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-muted-foreground text-xs tracking-wide">{children}</p>
+    <p className="text-xs tracking-wide text-muted-foreground">{children}</p>
   );
 }

@@ -72,7 +72,9 @@ function orderPresets(presets: PresetDefinition[]): PresetDefinition[] {
     const preset = byId.get(id);
     return preset ? [preset] : [];
   });
-  const rest = presets.filter((preset) => !GRID_PRESET_ORDER.includes(preset.id));
+  const rest = presets.filter(
+    (preset) => !GRID_PRESET_ORDER.includes(preset.id)
+  );
 
   return [...ordered, ...rest];
 }

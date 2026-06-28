@@ -22,7 +22,7 @@ import {
 import { GradientPreviewSurface } from "./check-pattern";
 import { EasingControls } from "./easing-controls";
 import { OutputTabs } from "./output-tabs";
-import { EDITOR_PAGE, PageHeader, SectionLabel } from "./ui";
+import { PageHeader, SectionLabel } from "./ui";
 import { useEasingGradientsRoutes } from "./use-routes";
 
 const DEFAULT_BEZIER: CubicBezierPoints = {
@@ -83,7 +83,7 @@ export function EasingGradientEditor({ presetId }: EasingGradientEditorProps) {
   );
 
   return (
-    <div className={EDITOR_PAGE}>
+    <div className="mx-auto flex w-full max-w-3xl flex-col gap-10 px-6 py-20">
       <PageHeader
         title={presetMeta?.label ?? "Custom"}
         description="Tune the easing and copy the output."

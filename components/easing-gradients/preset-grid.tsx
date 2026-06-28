@@ -19,7 +19,7 @@ import { cn } from "@/lib/utils";
 import { GradientPreviewSurface } from "./check-pattern";
 import { GradientKnob } from "./gradient-knob";
 import { useUiSound } from "./sound-provider";
-import { PAGE, PageHeader, Segment, SegmentGroup } from "./ui";
+import { PageHeader, Segment, SegmentGroup } from "./ui";
 import { useEasingGradientsRoutes } from "./use-routes";
 
 export function PresetGrid() {
@@ -38,7 +38,7 @@ export function PresetGrid() {
   );
 
   return (
-    <div className={PAGE}>
+    <div className="mx-auto flex w-full max-w-3xl flex-col gap-10 px-6 py-32">
       <PageHeader
         title="Easing Gradients"
         description="Smooth gradient stops for Tailwind and CSS."
