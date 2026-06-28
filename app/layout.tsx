@@ -2,8 +2,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { Geist_Mono, Inter } from "next/font/google";
 
 import "./globals.css";
-import { EasingGradientsSoundProvider } from "@/components/easing-gradients/sound-provider";
-import { ThemeProvider } from "@/components/theme-provider";
+import { Providers } from "@/components/providers";
 import { cn } from "@/lib/utils";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
@@ -30,13 +29,11 @@ export default function RootLayout({
       )}
     >
       <body>
-        <ThemeProvider>
-          <EasingGradientsSoundProvider>
-            <div className="min-h-dvh bg-background text-foreground">
-              {children}
-            </div>
-          </EasingGradientsSoundProvider>
-        </ThemeProvider>
+        <Providers>
+          <div className="min-h-dvh bg-background text-foreground">
+            {children}
+          </div>
+        </Providers>
         <Analytics />
       </body>
     </html>
